@@ -1,46 +1,221 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desk2Fit</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f7f4;
-      text-align: center;
-      padding: 25px;
-      color: #173b32;
-    }
-    .card {
-      max-width: 420px;
-      margin: 35px auto;
-      padding: 25px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 4px 18px #0001;
-    }
-    button {
-      display: block;
-      width: 100%;
-      margin: 12px 0;
-      padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      background: #16845b;
-      color: white;
-      font-size: 16px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desk2Fit</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f7f3;color:#193b30;font-family:Arial,sans-serif}
+header{background:#126b4b;color:white;text-align:center;padding:24px}
+header h1{margin:0}
+main{max-width:650px;margin:auto;padding:15px}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:15px}
+button{border:0;border-radius:10px;padding:12px;cursor:pointer}
+nav button{background:#dcebe3;color:#174b37;font-size:12px;font-weight:bold}
+nav button.active,.primary{background:#137950;color:white}
+.card{background:white;padding:18px;border-radius:15px;margin:12px 0;box-shadow:0 3px 12px #0000000c}
+.hidden{display:none}
+input,select{width:100%;padding:12px;margin:7px 0 12px;border:1px solid #cadbd0;border-radius:8px;font-size:16px}
+label{font-weight:bold;font-size:14px}
+.big{text-align:center;font-size:42px;font-weight:bold;margin:18px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row button{flex:1}
+.muted{color:#687b70;font-size:14px}
+.item{padding:12px 0;border-bottom:1px solid #e5eee8}
+.stat{background:#e6f2ea;padding:15px;border-radius:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+progress{width:100%;height:16px;accent-color:#16865b}
+</style>
 </head>
 <body>
-  <div class="card">
-    <h1>Desk2Fit 💪</h1>
-    <p>Your daily fitness companion</p>
-    <button onclick="alert('Workout feature coming soon!')">Start Workout</button>
-    <button onclick="alert('Meal tracking coming soon!')">Meals & Water</button>
-    <button onclick="alert('Progress tracking coming soon!')">My Progress</button>
-    <button onclick="alert('Profile feature coming soon!')">My Profile</button>
-  </div>
+<header>
+<h1>Desk2Fit 💪</h1>
+<p>Your daily fitness companion</p>
+</header>
+<main>
+<nav>
+<button class="active" data-tab="workout">Workout</button>
+<button data-tab="meals">Meals & Water</button>
+<button data-tab="progress">Progress</button>
+<button data-tab="profile">Profile</button>
+</nav>
+
+<section id="workout">
+<div class="card">
+<h2>⏱️ 10-Minute Workout</h2>
+<div class="big" id="timer">10:00</div>
+<progress id="timerBar" value="0" max="600"></progress>
+<p id="timerStatus">Ready to begin!</p>
+<div class="row">
+<button class="primary" id="start">Start</button>
+<button id="pause">Pause</button>
+<button id="reset">Reset</button>
+</div>
+</div>
+<div class="card">
+<h2>Today's Exercises</h2>
+<div class="item">🚶 Minutes 1–2: March in place</div>
+<div class="item">🙆 Minutes 3–4: Gentle arm circles</div>
+<div class="item">🪑 Minutes 5–6: Chair sit-to-stand</div>
+<div class="item">🧍 Minutes 7–8: Gentle stretching</div>
+<div class="item">🌬️ Minutes 9–10: Slow walking and breathing</div>
+<p class="muted">Move comfortably. Stop if you feel pain or dizziness.</p>
+</div>
+</section>
+
+<section id="meals" class="hidden">
+<div class="card">
+<h2>💧 Water Tracker</h2>
+<p>Glasses: <b id="waterCount">0</b> / <span id="goalText">8</span></p>
+<progress id="waterBar" value="0" max="8"></progress>
+<div class="row">
+<button class="primary" id="addWater">+ Add glass</button>
+<button id="removeWater">− Remove glass</button>
+</div>
+</div>
+<div class="card">
+<h2>🥗 Meal Tracker</h2>
+<label for="mealName">Food eaten</label>
+<input id="mealName" placeholder="e.g. Rice and vegetables">
+<label for="mealType">Meal type</label>
+<select id="mealType">
+<option>Breakfast</option><option>Lunch</option>
+<option>Snack</option><option>Dinner</option>
+</select>
+<button class="primary" id="saveMeal">Save meal</button>
+<div id="mealList"></div>
+</div>
+</section>
+
+<section id="progress" class="hidden">
+<div class="card">
+<h2>📈 My Progress</h2>
+<div class="grid">
+<div class="stat">Workouts completed<strong id="workoutCount">0</strong></div>
+<div class="stat">Water glasses<strong id="progressWater">0</strong></div>
+<div class="stat">Meals recorded<strong id="progressMeals">0</strong></div>
+<div class="stat">Workout minutes<strong id="progressMinutes">0</strong></div>
+</div>
+<p class="muted">Your progress is saved on this device.</p>
+</div>
+</section>
+
+<section id="profile" class="hidden">
+<div class="card">
+<h2>👤 My Profile</h2>
+<label for="userName">Name</label>
+<input id="userName" placeholder="Your name">
+<label for="userAge">Age</label>
+<input id="userAge" type="number" min="1" max="120" placeholder="Your age">
+<label for="waterGoal">Daily water glass goal</label>
+<input id="waterGoal" type="number" min="1" max="30" value="8">
+<label for="fitnessGoal">Fitness goal</label>
+<select id="fitnessGoal">
+<option>Stay active</option>
+<option>Improve flexibility</option>
+<option>Build a regular routine</option>
+<option>Improve general fitness</option>
+</select>
+<button class="primary" id="saveProfile">Save profile</button>
+<p id="profileStatus"></p>
+</div>
+</section>
+<footer class="muted">Desk2Fit • Small steps, every day</footer>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toLocaleDateString();
+const defaults={
+date:today(),water:0,meals:[],workouts:0,minutes:0,
+name:"",age:"",goal:8,fitnessGoal:"Stay active"
+};
+let data;
+try{
+data=JSON.parse(localStorage.getItem("desk2fit")||"null");
+}catch(e){data=null}
+if(!data||data.date!==today()) data={...defaults};
+function save(){localStorage.setItem("desk2fit",JSON.stringify(data));render()}
+function render(){
+$("waterCount").textContent=data.water;
+$("progressWater").textContent=data.water;
+$("goalText").textContent=data.goal;
+$("waterBar").max=data.goal;
+$("waterBar").value=data.water;
+$("workoutCount").textContent=data.workouts;
+$("progressMeals").textContent=data.meals.length;
+$("progressMinutes").textContent=data.minutes;
+$("mealList").innerHTML=data.meals.map((m,i)=>
+'<div class="item">'+escapeHTML(m.type)+': '+escapeHTML(m.name)+
+' <button data-remove="'+i+'">Remove</button></div>').join("");
+$("userName").value=data.name;
+$("userAge").value=data.age;
+$("waterGoal").value=data.goal;
+$("fitnessGoal").value=data.fitnessGoal;
+$("mealList").querySelectorAll("[data-remove]").forEach(b=>{
+b.onclick=()=>{data.meals.splice(Number(b.dataset.remove),1);save()};
+});
+}
+function escapeHTML(s){
+return String(s).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+document.querySelectorAll("[data-tab]").forEach(b=>{
+b.onclick=()=>{
+document.querySelectorAll("[data-tab]").forEach(x=>x.classList.remove("active"));
+b.classList.add("active");
+document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+$(b.dataset.tab).classList.remove("hidden");
+};
+});
+$("addWater").onclick=()=>{data.water=Math.min(data.water+1,100);save()};
+$("removeWater").onclick=()=>{data.water=Math.max(0,data.water-1);save()};
+$("saveMeal").onclick=()=>{
+const name=$("mealName").value.trim();
+if(!name){alert("Please enter the food name.");return}
+data.meals.push({name,type:$("mealType").value});
+$("mealName").value="";
+save();
+};
+$("saveProfile").onclick=()=>{
+data.name=$("userName").value.trim();
+data.age=$("userAge").value;
+data.goal=Math.max(1,Math.min(30,Number($("waterGoal").value)||8));
+data.fitnessGoal=$("fitnessGoal").value;
+$("profileStatus").textContent="Profile saved!";
+save();
+};
+let remaining=600,interval=null,wasCounted=false;
+function showTimer(){
+$("timer").textContent=Math.floor(remaining/60)+":"+
+String(remaining%60).padStart(2,"0");
+$("timerBar").value=600-remaining;
+}
+$("start").onclick=()=>{
+if(interval)return;
+if(remaining===0){remaining=600;wasCounted=false}
+$("timerStatus").textContent="Workout in progress";
+interval=setInterval(()=>{
+remaining--;showTimer();
+if(remaining<=0){
+clearInterval(interval);interval=null;
+$("timerStatus").textContent="Workout complete! Great job!";
+if(!wasCounted){data.workouts++;data.minutes+=10;wasCounted=true;save()}
+}
+},1000);
+};
+$("pause").onclick=()=>{
+if(interval){clearInterval(interval);interval=null}
+$("timerStatus").textContent="Paused";
+};
+$("reset").onclick=()=>{
+clearInterval(interval);interval=null;remaining=600;wasCounted=false;
+$("timerStatus").textContent="Ready to begin!";showTimer();
+};
+render();showTimer();
+</script>
 </body>
 </html>
