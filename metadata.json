@@ -1,0 +1,6 @@
+{
+  "name": "Desk2Fit",
+  "description": "Desk fitness, 10-minute chair workouts, Indian diet plans (Veg, Non-Veg, Jain, Egg), and posture streak tracking for office workers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
